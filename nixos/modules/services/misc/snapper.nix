@@ -62,9 +62,8 @@ in
             type = types.path;
             description = ''
               Path of the subvolume or mount point.
-              This path is a subvolume and has to contain a subvolume named
-              .snapshots.
-              See also man:snapper(8) section PERMISSIONS.
+              A child subvolume with required permissions will be created at .snapshots
+              if it does not exist yet.
             '';
           };
 
@@ -76,11 +75,32 @@ in
             '';
           };
 
+          allowUsers = mkOption {
+            type = types.listOf types.str;
+            default = [];
+            description = ''
+              List of users allowed to operate the configuration. root is always
+              implicitely contained in this list.
+              These users must have permissions to traverse directories up
+              to the specified subvolume.
+            '';
+          };
+
+          allowGroups = mkOption {
+            type = types.listOf types.str;
+            default = [];
+            description = ''
+              List of groups allowed to operate the configuration.
+              These groups must have permissions to traverse directories up
+              to the specified subvolume.
+            '';
+          };
+
           extraConfig = mkOption {
             type = types.lines;
             default = "";
             description = ''
-              Additional configuration next to SUBVOLUME and FSTYPE.
+              Additional configuration next to SUBVOLUME, ALLOW_USERS, ALLOW_GROUPS, and FSTYPE.
               See man:snapper-configs(5).
             '';
           };
@@ -111,6 +131,8 @@ in
           ${subvolume.extraConfig}
           FSTYPE="${subvolume.fstype}"
           SUBVOLUME="${subvolume.subvolume}"
+          ALLOW_USERS=${lib.concatStringsSep " " subvolume.allowUsers}
+          ALLOW_GROUPS=${lib.concatStringsSep " " subvolume.allowUsers}
         '';
       })) cfg.configs)
       // (lib.optionalAttrs (cfg.filters != null) {
@@ -118,6 +140,14 @@ in
       });
 
     };
+
+    systemd.tmpfiles.rules =
+      lib.flatten (lib.mapAttrsToList (name: cfg:
+      ["v ${cfg.subvolume}/.snapshots 0770 root root"] ++ (let
+        acl = lib.concatMapStringsSep "," (x: "${x}:r-x") ((map (u: "u:${u}") cfg.allowUsers) ++ (map (g: "g:${g}") cfg.allowGroups));
+      in
+      optional (acl != "") "a ${cfg.subvolume}/.snapshots - - - - ${acl cfg}")
+      ) cfg.configs);
 
     services.dbus.packages = [ pkgs.snapper ];
 
