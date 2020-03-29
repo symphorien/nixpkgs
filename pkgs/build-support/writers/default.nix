@@ -192,12 +192,25 @@ rec {
     {id="";for(i=idx;i<ctx;i++)id=sprintf("%s%s", id, "\t");printf "%s%s\n", id, $0}
    '';
 
+  /* Even if nginx configuration check complains that some file don't exist,
+  it will output "syntax is ok" if the configuration file is synctatically
+  acceptable.
+  We truncate output afterwards. */
+  awkCheckSyntaxNginx = builtins.toFile "awkCheckSyntax-nginx.awk" ''
+    awk -f
+    { print $0; }
+    /configuration file .* syntax is ok/ { exit 0; }
+    /configuration file .* test failed/ { exit 1; }
+    ENDFILE { print "could not parse syntax check result"; exit 2; }
+   '';
+
   writeNginxConfig = name: text: pkgs.runCommandLocal name {
     inherit text;
     passAsFile = [ "text" ];
   } /* sh */ ''
     # nginx-config-formatter has an error - https://github.com/1connect/nginx-config-formatter/issues/16
     ${pkgs.gawk}/bin/awk -f ${awkFormatNginx} "$textPath" | ${pkgs.gnused}/bin/sed '/^\s*$/d' > $out
+    (${pkgs.nginx}/bin/nginx -t -c $out || true) |& ${pkgs.gawk}/bin/awk -f ${awkCheckSyntaxNginx}
     ${pkgs.gixy}/bin/gixy $out
   '';
 

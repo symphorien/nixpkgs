@@ -62,7 +62,8 @@ import ./make-test-python.nix ({ pkgs, ... }: {
 
         {
           services.nginx.package = pkgs.nginxUnstable;
-          services.nginx.virtualHosts."!@$$(#*%".locations."~@#*$*!)".proxyPass = ";;;";
+          # this will trigger an error at runtime
+          services.nginx.virtualHosts."1.my.test".extraConfig = "error_log /does/not/exist/;";
         }
       ];
     };
