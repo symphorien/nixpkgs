@@ -235,16 +235,17 @@ stdenv.mkDerivation rec {
     makeWrapper
   ];
 
-  patches = [
-    (fetchpatch {
-      urls = [
-        "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-gfx/iscan/files/iscan-2.28.1.3+libpng-1.5.patch?h=b6e4c805d53b49da79a0f64ef16bb82d6d800fcf"
-        "https://web.archive.org/web/https://gitweb.gentoo.org/repo/gentoo.git/plain/media-gfx/iscan/files/iscan-2.28.1.3+libpng-1.5.patch?h=b6e4c805d53b49da79a0f64ef16bb82d6d800fcf"
-      ];
-      sha256 = "04y70qjd220dpyh771fiq50lha16pms98mfigwjczdfmx6kpj1jd";
-    })
+  patches = 
+  let gentooPatch = name: rev: sha256: stripLen: fetchpatch {
+    url = "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-gfx/iscan/files/${name}?h=${rev}";
+    inherit sha256 stripLen;
+  }; in
+  [
+    (gentooPatch "iscan-2.28.1.3+libpng-1.5.patch" "b6e4c805d53b49da79a0f64ef16bb82d6d800fcf" "04y70qjd220dpyh771fiq50lha16pms98mfigwjczdfmx6kpj1jd" 0)
+    (gentooPatch "iscan-2.30.4.2-sscanf.patch" "09ad8b4a33b46cd744018d3569deb8d42e5fe47f" "0drrac9mrw6f6dmvmx55rmh29llsq90as0w36nv9iwjr3a9h2rpj" 1)
     ./firmware_location.patch
     ];
+
   patchFlags = [ "-p0" ];
 
   configureFlags = [ "--enable-dependency-reduction" "--disable-frontend"];
