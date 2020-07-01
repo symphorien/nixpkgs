@@ -295,5 +295,11 @@ in {
         export NIX_CFLAGS_LINK="$NIX_CFLAGS_LINK -lXau -lXdmcp"
       '';
     });
+    libxcb = xorgsuper.libxcb.overrideAttrs (attrs: {
+      configureFlags = attrs.configureFlags ++ [ "--disable-shared" ];
+    });
+    libXi= xorgsuper.libXi.overrideAttrs (attrs: {
+      configureFlags = attrs.configureFlags ++ [ "--disable-shared" ];
+    });
   });
 }
