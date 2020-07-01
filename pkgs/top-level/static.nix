@@ -278,4 +278,22 @@ in {
 
 
   libev = super.libev.override { static = true; };
+
+  xorg = super.xorg.overrideScope' (xorgself: xorgsuper: {
+    libX11 = xorgsuper.libX11.overrideAttrs (attrs: {
+      depsBuildBuild = attrs.depsBuildBuild ++ [ (self.buildPackages.stdenv.cc.libc.static or null) ];
+    });
+    xauth = xorgsuper.xauth.overrideAttrs (attrs: {
+      # missing transitive dependencies
+      preConfigure = attrs.preConfigure or "" + ''
+        export NIX_CFLAGS_LINK="$NIX_CFLAGS_LINK -lxcb -lXau -lXdmcp"
+      '';
+    });
+    xdpyinfo = xorgsuper.xdpyinfo.overrideAttrs (attrs: {
+      # missing transitive dependencies
+      preConfigure = attrs.preConfigure or "" + ''
+        export NIX_CFLAGS_LINK="$NIX_CFLAGS_LINK -lXau -lXdmcp"
+      '';
+    });
+  });
 }
