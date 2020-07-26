@@ -1,13 +1,13 @@
 { system ? builtins.currentSystem,
   config ? {},
-  pkgs ? import ../.. { inherit system config; }
+  pkgs ? import ../../.. { inherit system config; }
 }:
 
 let
-  inherit (import ../lib/testing-python.nix { inherit system pkgs; }) makeTest;
+  inherit (import ../../lib/testing-python.nix { inherit system pkgs; }) makeTest;
   f = backend: makeTest {
     name = "ihatemoney-${backend}";
-    machine = { lib, ... }: {
+    machine = { nodes, lib, ... }: {
       services.ihatemoney = {
         enable = true;
         enablePublicProjectCreation = true;
@@ -17,6 +17,18 @@ let
         };
       };
       boot.cleanTmpDir = true;
+      # for exchange rates
+      security.pki.certificateFiles = [ ./server.crt ];
+      networking.extraHosts = "127.0.0.1 api.exchangeratesapi.io";
+      services.nginx = {
+        enable = true;
+        virtualHosts."api.exchangeratesapi.io" = {
+          addSSL = true;
+          sslCertificate = ./server.crt;
+          sslCertificateKey = ./server.key;
+          locations."/".return = "200 '${builtins.readFile ./rates.json}'";
+        };
+      };
       # ihatemoney needs a local smtp server otherwise project creation just crashes
       services.opensmtpd = {
         enable = true;
@@ -30,11 +42,13 @@ let
     testScript = ''
       machine.wait_for_open_port(8000)
       machine.wait_for_unit("uwsgi.service")
+      machine.wait_until_succeeds("curl https://api.exchangeratesapi.io")
       machine.wait_until_succeeds("curl http://localhost:8000")
 
-      assert '"yay"' in machine.succeed(
-          "curl -X POST http://localhost:8000/api/projects -d 'name=yay&id=yay&password=yay&contact_email=yay@example.com'"
+      result = machine.succeed(
+          "curl -X POST http://localhost:8000/api/projects -d 'name=yay&id=yay&password=yay&contact_email=yay@example.com&default_currency=XXX'"
       )
+      assert '"yay"' in result, repr(result)
       owner, timestamp = machine.succeed(
           "stat --printf %U:%G___%Y /var/lib/ihatemoney/secret_key"
       ).split("___")
