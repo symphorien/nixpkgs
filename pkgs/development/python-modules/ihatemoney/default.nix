@@ -4,6 +4,7 @@
 , Babel
 , blinker
 , click
+, cachetools
 , dnspython
 , email_validator
 , flask
@@ -23,6 +24,7 @@
 , markupsafe
 , python-dateutil
 , pytz
+, requests
 , six
 , sqlalchemy
 , sqlalchemy-continuum
@@ -49,30 +51,16 @@ in
 
 buildPythonPackage rec {
   pname = "ihatemoney";
-  version = "4.2";
+  version = "5.0";
 
   src = fetchFromGitHub {
     owner = "spiral-project";
     repo = pname;
-    rev = version;
-    sha256 = "0d4vc6m0jkwlz9ly0hcjghccydvqbldh2jb8yzf94jrgkd5fd7k1";
+    rev = "master";
+    sha256 = "1qrh8352nyk22yxp15ckxyyk0by1r4s1f6l5mvk4yj4nmgkcyrjs";
   };
 
   disabled = isPy27;
-
-  patches = [
-    # fix migration on postgresql
-    # remove on next release
-    (fetchpatch {
-      url = "https://github.com/spiral-project/ihatemoney/commit/6129191b26784b895e203fa3eafb89cee7d88b71.patch";
-      sha256 = "0yc24gsih9x3pnh2mhj4v5i71x02dq93a9jd2r8b1limhcl4p1sw";
-    })
-  ];
-
-  postPatch = ''
-    # remove draconian pinning
-    sed -i 's/==.*$//' setup.cfg
-  '';
 
   propagatedBuildInputs = [
     alembic
@@ -80,6 +68,7 @@ buildPythonPackage rec {
     Babel
     blinker
     click
+    cachetools
     dnspython
     email_validator
     flask
@@ -98,6 +87,7 @@ buildPythonPackage rec {
     markupsafe
     python-dateutil
     pytz
+    requests
     six
     sqlalchemy
     sqlalchemy-continuum
