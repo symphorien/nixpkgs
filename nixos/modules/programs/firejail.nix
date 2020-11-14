@@ -25,7 +25,7 @@ in {
     enable = mkEnableOption "firejail";
 
     wrappedBinaries = mkOption {
-      type = types.attrsOf types.path;
+      type = types.attrsOf types.string;
       default = {};
       example = literalExample ''
         {
