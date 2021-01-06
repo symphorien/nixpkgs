@@ -6,7 +6,7 @@ rec {
     repo = "paperwork";
     group = "World";
     owner = "OpenPaperwork";
-    rev = version;
-    sha256 = "1di7nnl8ywyiwfpl5m1kvip1m0hvijbmqmkdpviwqw7ajizrr1ly";
+    rev = "6dfbca1c9dcd5cfa0f25f7e0c00c0a01e0eb3c7a";
+    sha256 = "1raj2h3rd81pq3giqnc50nk2ir4mysnngjq0jn5s0ccslmxcawby";
   };
 }

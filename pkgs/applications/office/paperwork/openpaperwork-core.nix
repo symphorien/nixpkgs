@@ -27,6 +27,8 @@ buildPythonPackage rec {
     setuptools
   ];
 
+  doCheck = false;
+
   nativeBuildInputs = [ pkgs.gettext pkgs.which ];
 
   preBuild = ''

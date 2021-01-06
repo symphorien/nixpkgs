@@ -6,7 +6,7 @@
 , isPyPy
 
 , pyenchant
-, simplebayes
+, scikitlearn
 , pypillowfight
 , pycountry
 , whoosh
@@ -41,7 +41,7 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [
     pyenchant
-    simplebayes
+    scikitlearn
     pypillowfight
     pycountry
     whoosh
