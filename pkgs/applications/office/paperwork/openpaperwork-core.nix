@@ -2,7 +2,7 @@
 
 , isPy3k, isPyPy
 
-, distro, setuptools
+, distro, setuptools, psutil
 
 , pkgs
 }:
@@ -25,9 +25,10 @@ buildPythonPackage rec {
   propagatedBuildInputs = [
     distro
     setuptools
+    psutil
   ];
 
-  doCheck = false;
+  doCheck = true;
 
   nativeBuildInputs = [ pkgs.gettext pkgs.which ];
 
