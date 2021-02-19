@@ -29330,8 +29330,6 @@ in
 
   sane-backends = callPackage ../applications/graphics/sane/backends (config.sane or {});
 
-  sane-backends-git = callPackage ../applications/graphics/sane/backends/git.nix (config.sane or {});
-
   brlaser = callPackage ../misc/cups/drivers/brlaser { };
 
   fxlinuxprint = callPackage ../misc/cups/drivers/fxlinuxprint { };
