@@ -10587,6 +10587,14 @@ in
   llvm_6  = llvmPackages_6.llvm;
   llvm_5  = llvmPackages_5.llvm;
 
+  clang5Stdenv = lowPrio llvmPackages_5.stdenv;
+  clang6Stdenv = lowPrio llvmPackages_6.stdenv;
+  clang7Stdenv = lowPrio llvmPackages_7.stdenv;
+  clang8Stdenv = lowPrio llvmPackages_8.stdenv;
+  clang9Stdenv = lowPrio llvmPackages_9.stdenv;
+  clang10Stdenv = lowPrio llvmPackages_10.stdenv;
+  clang11Stdenv = lowPrio llvmPackages_11.stdenv;
+
   llvmPackages = with targetPlatform;
     if isDarwin then
       llvmPackages_7
