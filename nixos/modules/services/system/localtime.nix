@@ -38,6 +38,7 @@ in {
 
     users.users.localtimed = {
       description = "Taskserver user";
+      isSystemUser = true;
     };
 
     systemd.services.localtime = {
