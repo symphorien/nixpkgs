@@ -1,12 +1,15 @@
-{ lib, buildPythonPackage, fetchPypi, isPy3k, glibcLocales, flask, flask_sqlalchemy, flask_script, alembic }:
+{ lib, buildPythonPackage, fetchFromGitHub, isPy3k, glibcLocales, flask, flask_sqlalchemy, flask_script, alembic }:
 
 buildPythonPackage rec {
   pname = "Flask-Migrate";
   version = "3.1.0";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "57d6060839e3a7f150eaab6fe4e726d9e3e7cffe2150fb223d73f92421c6d1d9";
+  # pypi archive is missing tests/custom_template
+  src = fetchFromGitHub {
+    owner = "miguelgrinberg";
+    repo = "Flask-Migrate";
+    rev = "v${version}";
+    sha256 = "0zj7qpknvlhrh4fsp5sx4fwyx3sp41ynclka992zympm3xym9zyq";
   };
 
   checkInputs = [ flask_script ] ++ lib.optional isPy3k glibcLocales;
