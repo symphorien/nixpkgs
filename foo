@@ -1,0 +1,58 @@
+#! /nix/store/qm2lv1gpbyn0rsfai40cbvj3h4gz69yc-bash-5.1-p16/bin/bash -e
+PATH=${PATH:+':'$PATH':'}
+if [[ $PATH != *':''/nix/store/bfkdz20hydbc39bxa0j1rm55xxkgb1jf-grub-2.06/bin'':'* ]]; then
+    PATH=$PATH'/nix/store/bfkdz20hydbc39bxa0j1rm55xxkgb1jf-grub-2.06/bin'
+fi
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+if [[ $PATH != *':''/nix/store/48s4h862snj1m8dcw58rdj6mpj04188k-systemd-250.4/bin'':'* ]]; then
+    PATH=$PATH'/nix/store/48s4h862snj1m8dcw58rdj6mpj04188k-systemd-250.4/bin'
+fi
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+if [[ $PATH != *':''/nix/store/xpy48miz1rqzm7ziy0nrxr0vylvqrz98-coreutils-9.1/bin'':'* ]]; then
+    PATH=$PATH'/nix/store/xpy48miz1rqzm7ziy0nrxr0vylvqrz98-coreutils-9.1/bin'
+fi
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+if [[ $PATH != *':''/nix/store/68v1xa8ycj2yjshx9nfb4j0rcp31cba7-cryptsetup-2.4.3-bin/bin'':'* ]]; then
+    PATH=$PATH'/nix/store/68v1xa8ycj2yjshx9nfb4j0rcp31cba7-cryptsetup-2.4.3-bin/bin'
+fi
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+if [[ $PATH != *':''/nix/store/b9py87ml4psrp577hh836fnlwz8y6wga-util-linux-minimal-2.38-bin/bin'':'* ]]; then
+    PATH=$PATH'/nix/store/b9py87ml4psrp577hh836fnlwz8y6wga-util-linux-minimal-2.38-bin/bin'
+fi
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+if [[ $PATH != *':''/nix/store/f0vjjw02jx67ny243ndafz0brdf9lrgn-ntfs3g-2022.5.17/bin'':'* ]]; then
+    PATH=$PATH'/nix/store/f0vjjw02jx67ny243ndafz0brdf9lrgn-ntfs3g-2022.5.17/bin'
+fi
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+if [[ $PATH != *':''/nix/store/4zqrz1x6q62yghh0ha2a1lihcp7z4ws0-lvm2-2.03.16-bin/bin'':'* ]]; then
+    PATH=$PATH'/nix/store/4zqrz1x6q62yghh0ha2a1lihcp7z4ws0-lvm2-2.03.16-bin/bin'
+fi
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+if [[ $PATH != *':''/nix/store/dmh5mqc9rqdp92c4w68x3rf42qd8hnid-dmraid-1.0.0.rc16/bin'':'* ]]; then
+    PATH=$PATH'/nix/store/dmh5mqc9rqdp92c4w68x3rf42qd8hnid-dmraid-1.0.0.rc16/bin'
+fi
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+command -v mktemp mapdevfs udev grub-mount cryptsetup ntfs-3g blkid lsblk  vol_id
